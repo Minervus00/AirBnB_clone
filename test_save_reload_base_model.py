@@ -1,4 +1,5 @@
-#!C:/Users/LENOVO/AppData/Local/Programs/Python/Python39/python.exe
+#!/usr/bin/python3
+# C:/Users/LENOVO/AppData/Local/Programs/Python/Python39/python.exe
 from models import storage
 from models.base_model import BaseModel
 
