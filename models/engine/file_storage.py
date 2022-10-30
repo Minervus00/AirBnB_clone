@@ -3,6 +3,12 @@
 from json import dumps, loads
 from os.path import exists
 import models.base_model
+import models.user
+import models.state
+import models.city
+import models.amenity
+import models.place
+import models.review
 
 
 class FileStorage:
@@ -37,6 +43,14 @@ class FileStorage:
             with open(FileStorage.__file_path, encoding='utf-8') as file:
                 dic = loads(file.read())
                 for key, val in dic.items():
-                    objclass = dic[key]['__class__']
+                    ob = dic[key]['__class__']
+                    ob1 = "models." + {
+                        'BaseModel': 'base_model',
+                        'User': 'user',
+                        'State': 'state',
+                        'City': 'city',
+                        'Place': 'place',
+                        'Amenity': 'amenity',
+                        'Review': 'review'}[ob]
                     FileStorage.__objects[key] = eval(
-                        "models.base_model." + objclass + "(**val)")
+                        ob1 + f".{ob}" + "(**val)")

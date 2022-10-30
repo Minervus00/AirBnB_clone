@@ -1,15 +1,22 @@
 #!/usr/bin/python3
-# C:/Users/LENOVO/AppData/Local/Programs/Python/Python39/python.exe
 """Module containing the command interpreter program"""
 import cmd
 from models.base_model import BaseModel
 from models.__init__ import storage
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 
 
 class HBNBCommand(cmd.Cmd):
     """The command interpreter class"""
     prompt = "(hbnb) "
-    authObj = ["BaseModel"]  # authorized classes
+    # authObj = authorized classes
+    authObj = [
+        "BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
 
     def do_create(self, argu):
         """Creates a new instance of BaseModel, saves it (JSON)
@@ -30,10 +37,7 @@ class HBNBCommand(cmd.Cmd):
         arg = arg.split()
         if valid(arg):
             tmp_dic = storage._FileStorage__objects.get(f"{arg[0]}.{arg[1]}")
-            # if arg[0] == "BaseModel":
             print(tmp_dic)
-            # else:
-            #     print(User(**tmp_dic))
 
     def do_destroy(self, arg):
         """Deletes an instance based on the class name and id
@@ -79,7 +83,9 @@ class HBNBCommand(cmd.Cmd):
         elif length == 3:
             print("** value missing **")
         else:
-            setattr(dic[f"{arg[0]}.{arg[1]}"], arg[2], arg[3])
+            if arg[3].count('"') == 1:
+                arg[3] += " " + arg[4]
+            setattr(dic[f"{arg[0]}.{arg[1]}"], arg[2], arg[3].replace('"', ''))
             storage.save()
 
     def emptyline(self):
