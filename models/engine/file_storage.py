@@ -2,6 +2,7 @@
 """Module conatining the class FileStorage"""
 from json import dumps, loads
 from os.path import exists
+import models.base_model
 
 
 class FileStorage:
@@ -17,15 +18,25 @@ class FileStorage:
     def new(self, obj):
         """Sets in __objects the obj with key <obj class name>.id"""
         key = f"{obj.__class__.__name__}.{obj.id}"
-        FileStorage.__objects[key] = obj.to_dict()
+        FileStorage.__objects[key] = obj
 
     def save(self):
         """serializes __objects to the JSON file at the path __file_path"""
         with open(FileStorage.__file_path, 'w', encoding='utf-8') as file:
-            file.write(dumps(FileStorage.__objects))
+            dic = FileStorage.__objects.copy()
+            # print(f"prev obj={FileStorage.__objects}")
+            for k in dic:
+                dic[k] = dic[k].to_dict()
+            # print(f"post obj={FileStorage.__objects}")
+            # print(f"post dic={dic}")
+            file.write(dumps(dic))
 
     def reload(self):
         """Deserializes the JSON file to __objects"""
         if exists(FileStorage.__file_path):
             with open(FileStorage.__file_path, encoding='utf-8') as file:
-                FileStorage.__objects = loads(file.read())
+                dic = loads(file.read())
+                for key, val in dic.items():
+                    objclass = dic[key]['__class__']
+                    FileStorage.__objects[key] = eval(
+                        "models.base_model." + objclass + "(**val)")
