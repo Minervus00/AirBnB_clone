@@ -9,16 +9,18 @@ from models.__init__ import storage
 class HBNBCommand(cmd.Cmd):
     """The command interpreter class"""
     prompt = "(hbnb) "
+    authObj = ["BaseModel"]  # authorized classes
 
     def do_create(self, argu):
         """Creates a new instance of BaseModel, saves it (JSON)
         and prints id. Ex: $ create BaseModel"""
+        argu = argu.split()
         if not argu:
             print("** class name missing **")
-        elif argu != "BaseModel":
+        elif argu[0] not in self.authObj:
             print("** class doesn't exist **")
         else:
-            dum = BaseModel()
+            dum = eval(argu[0] + "()")
             dum.save()
             print(dum.id)
 
@@ -28,43 +30,32 @@ class HBNBCommand(cmd.Cmd):
         arg = arg.split()
         if valid(arg):
             tmp_dic = storage._FileStorage__objects.get(f"{arg[0]}.{arg[1]}")
-            if (tmp_dic):
-                print(BaseModel(**tmp_dic))
-            else:
-                print("** no instance found **")
+            # if arg[0] == "BaseModel":
+            print(tmp_dic)
+            # else:
+            #     print(User(**tmp_dic))
 
     def do_destroy(self, arg):
         """Deletes an instance based on the class name and id
         (update the JSON file). Ex: $ destroy BaseModel 1234-1234-1234"""
         arg = arg.split()
         if valid(arg):
-            dc = storage._FileStorage__objects.pop(f"{arg[0]}.{arg[1]}", False)
-            if not dc:
-                print("** no instance found **")
-            else:
-                storage.save()
+            storage._FileStorage__objects.pop(f"{arg[0]}.{arg[1]}")
+            storage.save()
 
     def do_all(self, arg):
         """Prints all string representation of all instances based or not on
         the class name. Ex: $ all BaseModel or $ all"""
         dic = storage._FileStorage__objects
-        if arg:
-            arg = arg.split()
-            if len(arg) != 1:
-                print("** class doesn't exist **")
-            else:
-                resu = []
-                for k, v in dic.items():
-                    if k.startswith(arg[0]):
-                        resu.append(str(BaseModel(**v)))
-                if resu:
-                    print(resu)
-                else:
-                    print("** class doesn't exist **")
+        arg = arg.split()
+        if arg and arg[0] not in self.authObj:
+            print("** class doesn't exist **")
         else:
             resu = []
             for k, v in dic.items():
-                resu.append(str(BaseModel(**v)))
+                if arg and arg[0] not in k:
+                    continue
+                resu.append(str(v))
             if resu:
                 print(resu)
 
@@ -77,18 +68,18 @@ class HBNBCommand(cmd.Cmd):
         length = len(arg)
         if not arg:
             print("** class name missing **")
-        elif arg[0] not in ["BaseModel"]:
+        elif arg[0] not in self.authObj:
             print("** class doesn't exist **")
         elif length == 1:
             print("** instance id missing **")
-        elif length >= 2 and not dic.get(f"{arg[0]}.{arg[1]}", False):
+        elif length >= 2 and f"{arg[0]}.{arg[1]}" not in dic.keys():
             print("** no instance found **")
         elif length == 2:
             print("** attribute name missing **")
         elif length == 3:
             print("** value missing **")
         else:
-            dic[f"{arg[0]}.{arg[1]}"][f"{arg[2]}"] = f"{arg[4]}"
+            setattr(dic[f"{arg[0]}.{arg[1]}"], arg[2], arg[3])
             storage.save()
 
     def emptyline(self):
@@ -104,14 +95,19 @@ def valid(arg):
     """Returns True if the command line is valid,
     otherwise False and prints the error"""
     check = True
+    dic = storage._FileStorage__objects
+    length = len(arg)
     if not arg:
         print("** class name missing **")
         check = False
-    elif arg[0] not in ["BaseModel"]:
+    elif arg[0] not in HBNBCommand.authObj:
         print("** class doesn't exist **")
         check = False
-    elif len(arg) != 2:
+    elif length == 1:
         print("** instance id missing **")
+        check = False
+    elif f"{arg[0]}.{arg[1]}" not in dic.keys():
+        print("** no instance found **")
         check = False
     return check
 
