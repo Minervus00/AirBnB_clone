@@ -1,5 +1,4 @@
-#!C:/Users/LENOVO/AppData/Local/Programs/Python/Python39/python.exe
-# /usr/bin/python3
+#!/usr/bin/python3
 """Module containing the command interpreter program"""
 import cmd
 from models.base_model import BaseModel
