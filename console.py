@@ -1,4 +1,5 @@
-#!/usr/bin/python3
+#!C:/Users/LENOVO/AppData/Local/Programs/Python/Python39/python.exe
+# /usr/bin/python3
 """Module containing the command interpreter program"""
 import cmd
 from models.base_model import BaseModel
@@ -19,7 +20,7 @@ class HBNBCommand(cmd.Cmd):
         "BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
 
     def do_create(self, argu):
-        """Creates a new instance of BaseModel, saves it (JSON)
+        """Creates a new instance of a class, saves it (JSON)
         and prints id. Ex: $ create BaseModel"""
         argu = argu.split()
         if not argu:
@@ -87,6 +88,31 @@ class HBNBCommand(cmd.Cmd):
                 arg[3] += " " + arg[4]
             setattr(dic[f"{arg[0]}.{arg[1]}"], arg[2], arg[3].replace('"', ''))
             storage.save()
+
+    def do_count(self, argu):
+        """Counts instances of a class, saves it (JSON)
+        and prints id. Ex: $ count BaseModel"""
+        argu = argu.split()
+        if not argu:
+            print("** class name missing **")
+        elif argu[0] not in self.authObj:
+            print("** class doesn't exist **")
+        else:
+            cnt = 0
+            for k in storage._FileStorage__objects.keys():
+                if argu[0] in k:
+                    cnt += 1
+            print(cnt)
+
+    def onecmd(self, line):
+        if '.' in line:
+            dic = storage._FileStorage__objects
+            for it in ["(", ")", ",", '"']:
+                line = line.replace(it, ".")
+            line = line.split(".")
+            line[0:2] = [line[1], line[0]]
+            line = " ".join(line)
+        return super().onecmd(line)
 
     def emptyline(self):
         pass
