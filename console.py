@@ -106,7 +106,6 @@ class HBNBCommand(cmd.Cmd):
 
     def onecmd(self, line):
         if '.' in line:
-            dic = storage._FileStorage__objects
             for it in ["(", ")", ",", '"']:
                 line = line.replace(it, ".")
             line = line.split(".")
