@@ -6,7 +6,7 @@ A minified clone of `AirBnB` web site.
 It's command line interface to manage (create, modify or delete) AirBnB objects
 The HolbertonBnB console can be run both interactively and non-interactively.
 
-###### How to run and close it
+###### ***How to run and close it***
 To run the console in non-interactive mode, pipe any command(s) into an execution of the file `./console.py` at the command line. Ex: `$ echo "help" | ./console.py`.
 To quit the console, enter the command `quit`, or input an EOF signal (`ctrl-D`/`ctrl-Z` for `ubuntu`/`windows`).
 
@@ -32,7 +32,7 @@ $ ./console.py
 (hbnb) ^D (or ^Z for windows or EOF)
 $
 ```
-###### Availabe Commands
+###### ***Availabe Commands***
 - **create** : `create <class>` -> Creates a new instance of the specified class. The class' ID is printed and the instance is saved to the file `file.json`.
 - **show**: `show <class> <id>` or `<class>.show(<id>)` -> Prints the string representation of a class instance based on a given id
 - **destroy**: `destroy <class> <id>` or `<class>.destroy(<id>)` -> Deletes a class instance based on a given id
@@ -40,7 +40,7 @@ $
 - **update**: `update <class> <id> <attribute name> "<attribute value>"` or `<class>.update(<id>, <attribute name>, <attribute value>)` or `<class>.update(<id>, <attribute dictionary>)` -> Updates a class instance based on a given id with a given key/value attribute pair or dictionary of attribute pairs.
 - **count**: `count <class>` or `<class>.count()` -> Retrieves the number of instances of a given class
 
-###### Examples
+###### ***Examples***
 ```
 $ ./console.py
 (hbnb) create BaseModel
