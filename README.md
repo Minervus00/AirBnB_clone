@@ -38,7 +38,7 @@ $
 - **destroy**: `destroy <class> <id>` or `<class>.destroy(<id>)` -> Deletes a class instance based on a given id
 - **all**: `all` or `al <class> <id>` or `<class>.all(<id>)` -> Prints the string representations of all instances of a given class. If no class name is provided, the command prints all instances of every class.
 - **update**: `update <class> <id> <attribute name> "<attribute value>"` or `<class>.update(<id>, <attribute name>, <attribute value>)` or `<class>.update(<id>, <attribute dictionary>)` -> Updates a class instance based on a given id with a given key/value attribute pair or dictionary of attribute pairs.
-- **count**: Retrieves the number of instances of a given class
+- **count**: `count <class>` or `<class>.count()` -> Retrieves the number of instances of a given class
 
 ###### Examples
 ```
