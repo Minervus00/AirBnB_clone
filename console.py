@@ -104,6 +104,7 @@ class HBNBCommand(cmd.Cmd):
             print(cnt)
 
     def onecmd(self, line):
+        # TODO: Reorganize line parsing in order to manage int float and dict
         if '.' in line:
             for it in ["(", ")", ",", '"']:
                 line = line.replace(it, ".")
