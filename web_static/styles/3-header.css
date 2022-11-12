@@ -9,7 +9,6 @@ header {
 }
 
 header div {
-	position: fixed;
 	left: 20px;
 	background-image: url('../images/logo.png');
 	/* border: 2px dashed red; */
